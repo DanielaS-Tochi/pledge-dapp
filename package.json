@@ -11,7 +11,13 @@
     "type": "git",
     "url": "git+https://github.com/DanielaS-Tochi/pledge-dapp.git"
   },
-  "keywords": ["microgoals", "compromisos", "ETH", "DApp", "NFT"],
+  "keywords": [
+    "microgoals",
+    "compromisos",
+    "ETH",
+    "DApp",
+    "NFT"
+  ],
   "author": "Daniela Silvana Tochi",
   "license": "ISC",
   "type": "commonjs",
@@ -20,6 +26,11 @@
   },
   "homepage": "https://github.com/DanielaS-Tochi/pledge-dapp#readme",
   "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@typechain/hardhat": "^9.1.0",
     "hardhat": "^2.23.0"
+  },
+  "dependencies": {
+    "ethers": "^6.13.7"
   }
 }
