@@ -1,5 +1,5 @@
-import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import { HardhatUserConfig } from "hardhat/config";
 import "@typechain/hardhat";
 
 const config: HardhatUserConfig = {

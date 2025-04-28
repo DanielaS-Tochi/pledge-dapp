@@ -16,13 +16,15 @@ export function App() {
       padding="md"
     >
       <AppShell.Header
-        style={{
-          background: 'var(--primary-light)',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        }}
-      >
-        <Group h="100%" px="md" justify="space-between">
-          <h1 style={{ color: 'white', margin: 0, fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '1.8rem', letterSpacing: '.03em' }}>
+      style={{
+        background: 'var(--header-bg)',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        paddingTop: 8,
+        paddingBottom: 8,
+      }}
+>
+        <Group h="100%" px="md" justify="space-between" align="center">
+          <h1>
             Pledge DApp
           </h1>
           <Group gap="md">
