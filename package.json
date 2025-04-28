@@ -1,0 +1,25 @@
+{
+  "name": "pledge-dapp",
+  "version": "1.0.0",
+  "description": "Una DApp donde los usuarios pueden crear micro-compromisos públicos y comprometer una pequeña cantidad de ETH como incentivo",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielaS-Tochi/pledge-dapp.git"
+  },
+  "keywords": ["microgoals", "compromisos", "ETH", "DApp", "NFT"],
+  "author": "Daniela Silvana Tochi",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/DanielaS-Tochi/pledge-dapp/issues"
+  },
+  "homepage": "https://github.com/DanielaS-Tochi/pledge-dapp#readme",
+  "devDependencies": {
+    "hardhat": "^2.23.0"
+  }
+}
