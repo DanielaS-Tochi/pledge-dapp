@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useDisclosure } from '@mantine/hooks';
+import { AppShell, Button, Group } from '@mantine/core';
+import { ConnectButton } from './components/ConnectButton';
+import { CreatePledgeModal } from './components/CreatePledgeModal';
+import { PledgesList } from './components/PledgesList';
+import { useAccount } from 'wagmi';
+import './index.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+export function App() {
+  const [opened, { open, close }] = useDisclosure(false);
+  const { isConnected } = useAccount();
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <AppShell
+      header={{ height: 60 }}
+      padding="md"
+    >
+      <AppShell.Header
+        style={{
+          background: 'var(--primary-light)',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        }}
+      >
+        <Group h="100%" px="md" justify="space-between">
+          <h1 style={{ color: 'white', margin: 0, fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: '1.8rem', letterSpacing: '.03em' }}>
+            Pledge DApp
+          </h1>
+          <Group gap="md">
+            {isConnected && (
+              <Button
+                onClick={open}
+                variant="gradient"
+                gradient={{ from: 'cyan', to: 'indigo' }}
+                radius="md"
+                size="md"
+                style={{ fontWeight: 600, letterSpacing: '.03em' }}
+              >
+                New Pledge
+              </Button>
+            )}
+            <ConnectButton />
+          </Group>
+        </Group>
+      </AppShell.Header>
 
-export default App
+      <AppShell.Main>
+        <PledgesList />
+        <CreatePledgeModal opened={opened} close={close} />
+      </AppShell.Main>
+    </AppShell>
+  );
+}

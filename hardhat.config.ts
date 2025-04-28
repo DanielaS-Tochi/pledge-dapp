@@ -15,6 +15,7 @@ const config: HardhatUserConfig = {
   typechain: {
     outDir: "frontend/src/types",
     target: "ethers-v6",
+    alwaysGenerateOverloads: true,
   }
 };
 

@@ -1,68 +1,140 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --primary: #4f46e5;
+  --primary-light: #6a6cfa;
+  --accent: #22d3ee;
+  --success: #22c55e;
+  --warning: #facc15;
+  --danger: #ef4444;
+  --bg: #f8fafc;
+  --card-bg: #fff;
+  --text: #1e293b;
+  --muted: #64748b;
+  --border: #e5e7eb;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* Mobile first approach */
+@media (max-width: 768px) {
+  .pledge-card {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+  .pledge-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
+/* Desktop styles */
+@media (min-width: 769px) {
+  .pledge-card {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .pledge-actions {
+    flex-direction: row;
+    gap: 16px;
+  }
+}
+
+/* Common styles */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Roboto', Arial, sans-serif;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.8rem;
+  margin: 0;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+.pledge-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(76, 81, 255, 0.07), 0 1.5px 4px rgba(0,0,0,0.04);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s;
+}
+
+.pledge-card:hover {
+  box-shadow: 0 8px 32px rgba(76, 81, 255, 0.14), 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.pledge-description {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--primary);
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.pledge-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.pledge-meta .badge {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.pledge-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.button-primary {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.button-primary:hover {
+  background: var(--primary-light);
+}
+
+.button-danger {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.button-danger:hover {
+  background: #dc2626;
+}
+
+/* Status badge colors */
+.badge-success {
+  background: var(--success);
+  color: #fff;
+}
+
+.badge-warning {
+  background: var(--warning);
+  color: #fff;
+}
+
+.badge-danger {
+  background: var(--danger);
+  color: #fff;
 }
