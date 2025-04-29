@@ -9,16 +9,6 @@ Una aplicación descentralizada (dApp) para gestionar compromisos ("pledges") en
 - Integración con MetaMask u otras wallets compatibles con EVM.
 - Uso de tecnologías: Hardhat, Ethers.js, React, TypeScript.
 
-## Estructura del Proyecto
-
-```
-pledge-dapp/
-├── contracts/ # Smart contracts en Solidity
-├── frontend/ # Aplicación web en React + TypeScript
-│ ├── src/ │ └── ... ├── scripts/ # Scripts de despliegue y utilidades ├── test/ # Pruebas de los smart contracts ├── hardhat.config.ts # Configuración de Hardhat └── README.md
-```
-
-
 ## Requisitos
 
 - Node.js >= 16.x
@@ -59,13 +49,10 @@ En el directorio frontend:
 npm run dev
 ```
 
-Abre http://localhost:3000 en tu navegador.
+Abre http://localhost:5173 en tu navegador.
 
 Personalización
 Modifica los contratos en contracts/ según tus necesidades.
 Ajusta la configuración de red en frontend/src/config.ts.
 Contribución
 ¡Las contribuciones son bienvenidas! Por favor, abre un issue o un pull request.
-
-Licencia
-MIT
