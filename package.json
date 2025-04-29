@@ -45,5 +45,8 @@
     "hardhat-gas-reporter": "^1.0.10",
     "solidity-coverage": "^0.8.15",
     "typechain": "^8.3.2"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.74.7"
   }
 }

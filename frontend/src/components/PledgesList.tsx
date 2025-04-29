@@ -1,51 +1,299 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Tabs, Card, Text, Group, Badge, Button, Stack, LoadingOverlay } from '@mantine/core'
-import { useAccount, useReadContract, useWriteContract } from 'wagmi'
-import PledgeArtifact from '../../../artifacts/contracts/Pledge.sol/Pledge.json'
-import { contractAddress } from '../config'
-import { notifications } from '@mantine/notifications'
-import dayjs from 'dayjs'
-import { useState } from 'react'
+// /* eslint-disable @typescript-eslint/no-explicit-any */
+// import { Tabs, Card, Text, Group, Badge, Button, Stack, LoadingOverlay } from '@mantine/core'
+// import { useAccount, useWriteContract } from 'wagmi'
+// import PledgeArtifact from '../../../artifacts/contracts/Pledge.sol/Pledge.json'
+// import { contractAddress as contractAddressRaw } from '../config'
+// import { notifications } from '@mantine/notifications'
+// import dayjs from 'dayjs'
+// import { useState } from 'react'
+// import { useQuery, useQueries } from '@tanstack/react-query'
+// import { readContract } from '@wagmi/core'
+// import { Address } from 'viem/accounts'
 
-const PledgeAbi = PledgeArtifact.abi
+// // Define el tipo de un compromiso (ajusta los campos según tu contrato)
+// type Pledge = {
+//   description: string;
+//   completed: boolean;
+//   claimed: boolean;
+//   deadline: bigint;
+//   stakeAmount: bigint;
+//   // Agrega otros campos si tu contrato los tiene
+// };
+
+// const contractAddress = contractAddressRaw as Address;
+// const PledgeAbi = PledgeArtifact.abi
+
+// export function PledgesList() {
+//   const { address } = useAccount()
+//   const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active')
+
+//   // 1. Leer los IDs de los compromisos del usuario
+//   const { data: pledgeIds = [], isLoading: isLoadingIds } = useQuery<bigint[]>({
+//     queryKey: ['userCommitments', address],
+//     queryFn: async (): Promise<bigint[]> => {
+//       if (!address) return []
+//       return await readContract({
+//         address: contractAddress,
+//         abi: PledgeAbi,
+//         functionName: 'getUserCommitments',
+//         args: [address],
+//       }) as bigint[]
+//     },
+//     enabled: !!address,
+//   })
+
+//   // 2. Leer detalles de cada compromiso individualmente
+//   const pledgeDetailsQueries = useQueries({
+//     queries: (Array.isArray(pledgeIds) ? pledgeIds : []).map((id) => ({
+//       queryKey: ['pledgeDetail', id ? id.toString() : ''],
+//       queryFn: async (): Promise<Pledge> => {
+//         return await readContract({
+//           address: contractAddress,
+//           abi: PledgeAbi,
+//           functionName: 'getCommitmentDetails',
+//           args: [id],
+//         }) as Pledge
+//       },
+//       enabled: !!id && !!address,
+//     })),
+//   })
+
+//   const isLoadingPledges = pledgeDetailsQueries.some(q => q.isLoading)
+//   const pledges: Pledge[] = pledgeDetailsQueries.map(q => q.data).filter(Boolean) as Pledge[]
+
+//   // 3. Filtrar compromisos según la pestaña activa
+//   const filteredPledges = pledges.filter(pledge => {
+//     if (activeTab === 'active') {
+//       return !pledge.completed && !pledge.claimed
+//     } else {
+//       return pledge.completed || pledge.claimed
+//     }
+//   })
+
+//   return (
+//     <Tabs value={activeTab} onChange={(value) => setActiveTab(value as any)}>
+//       <Tabs.List>
+//         <Tabs.Tab value="active">Activos</Tabs.Tab>
+//         <Tabs.Tab value="completed">Completados</Tabs.Tab>
+//       </Tabs.List>
+
+//       <Tabs.Panel value="active" pt="md">
+//         <Stack>
+//           {!address && (
+//             <Text ta="center" c="dimmed">Conectá tu wallet para ver tus compromisos</Text>
+//           )}
+
+//           {(isLoadingIds || isLoadingPledges) && <LoadingOverlay visible />}
+
+//           {address && filteredPledges.length === 0 && !isLoadingIds && !isLoadingPledges && (
+//             <Text ta="center" c="dimmed">No hay compromisos activos</Text>
+//           )}
+
+//           {filteredPledges.map((pledge, index) => (
+//             <PledgeCard
+//               key={index}
+//               pledge={pledge}
+//               id={Array.isArray(pledgeIds) ? pledgeIds[index] : 0n}
+//               isActive={true}
+//             />
+//           ))}
+//         </Stack>
+//       </Tabs.Panel>
+
+//       <Tabs.Panel value="completed" pt="md">
+//         <Stack>
+//           {filteredPledges.length === 0 && (
+//             <Text ta="center" c="dimmed">No hay compromisos completados</Text>
+//           )}
+
+//           {filteredPledges.map((pledge, index) => (
+//             <PledgeCard
+//               key={index}
+//               pledge={pledge}
+//               id={Array.isArray(pledgeIds) ? pledgeIds[index] : 0n}
+//               isActive={false}
+//             />
+//           ))}
+//         </Stack>
+//       </Tabs.Panel>
+//     </Tabs>
+//   )
+// }
+
+// function PledgeCard({ pledge, id, isActive }: { pledge: Pledge, id: bigint, isActive: boolean }) {
+//   const { writeContract: markComplete, isPending: isCompleting } = useWriteContract()
+//   const { writeContract: claimStake, isPending: isClaiming } = useWriteContract()
+
+//   const handleComplete = async () => {
+//     try {
+//       await markComplete({
+//         address: contractAddress,
+//         abi: PledgeAbi,
+//         functionName: 'markAsCompleted',
+//         args: [id],
+//       })
+//       notifications.show({
+//         title: 'Éxito',
+//         message: 'Compromiso marcado como completado',
+//         color: 'green',
+//       })
+//     } catch (error: any) {
+//       notifications.show({
+//         title: 'Error',
+//         message: error.message,
+//         color: 'red',
+//       })
+//     }
+//   }
+
+//   const handleClaim = async () => {
+//     try {
+//       await claimStake({
+//         address: contractAddress,
+//         abi: PledgeAbi,
+//         functionName: 'claimStake',
+//         args: [id],
+//       })
+//       notifications.show({
+//         title: 'Éxito',
+//         message: 'Stake reclamado correctamente',
+//         color: 'green',
+//       })
+//     } catch (error: any) {
+//       notifications.show({
+//         title: 'Error',
+//         message: error.message,
+//         color: 'red',
+//       })
+//     }
+//   }
+
+//   const status = pledge.completed
+//     ? 'Completado'
+//     : dayjs.unix(Number(pledge.deadline)).isBefore(dayjs())
+//       ? 'Vencido'
+//       : 'Activo'
+
+//   return (
+//     <Card withBorder shadow="sm" padding="lg">
+//       <Text fw={500} mb="xs">{pledge.description}</Text>
+
+//       <Group mb="xs">
+//         <Badge color={status === 'Completado' ? 'green' : status === 'Vencido' ? 'red' : 'blue'}>
+//           {status}
+//         </Badge>
+//         <Text size="sm" c="dimmed">
+//           Fecha límite: {dayjs.unix(Number(pledge.deadline)).format('MMM D, YYYY')}
+//         </Text>
+//         <Text size="sm" c="dimmed">
+//           Stake: {Number(pledge.stakeAmount) / 1e18} ETH
+//         </Text>
+//       </Group>
+
+//       {isActive && !pledge.completed && (
+//         <Button
+//           onClick={handleComplete}
+//           loading={isCompleting}
+//           fullWidth
+//           mt="md"
+//         >
+//           Marcar como completado
+//         </Button>
+//       )}
+
+//       {!pledge.claimed && (
+//         <Button
+//           onClick={handleClaim}
+//           loading={isClaiming}
+//           variant="light"
+//           fullWidth
+//           mt="xs"
+//         >
+//           {pledge.completed ? 'Reclamar Stake' : 'Donar Stake'}
+//         </Button>
+//       )}
+//     </Card>
+//   )
+// }
+
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Tabs, Card, Text, Group, Badge, Button, Stack } from '@mantine/core';
+import { useAccount, useWriteContract } from 'wagmi';
+import PledgeArtifact from '../../../artifacts/contracts/Pledge.sol/Pledge.json';
+import { contractAddress as contractAddressRaw } from '../config';
+import { notifications } from '@mantine/notifications';
+import dayjs from 'dayjs';
+import { useState } from 'react';
+import { useQueries, useQuery } from '@tanstack/react-query';
+import { readContract } from '@wagmi/core';
+
+// Define el tipo de un compromiso (ajusta los campos según tu contrato)
+type Pledge = {
+  description: string;
+  completed: boolean;
+  claimed: boolean;
+  deadline: bigint;
+  stakeAmount: bigint;
+  // Agrega otros campos si tu contrato los tiene
+};
+
+const contractAddress = contractAddressRaw as `0x${string}`;
+const PledgeAbi = PledgeArtifact.abi;
 
 export function PledgesList() {
-  const { address } = useAccount()
-  const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active')
+  const { address } = useAccount();
+  const [activeTab, setActiveTab] = useState<'active' | 'completed'>('active');
 
   // 1. Leer los IDs de los compromisos del usuario
-  const { data: pledgeIds = [], isLoading: isLoadingIds } = useReadContract({
-    address: contractAddress,
-    abi: PledgeAbi,
-    functionName: 'getUserCommitments',
-    args: [address],
-    query: {
-      enabled: !!address,
+  const { data: pledgeIds = [] } = useQuery<bigint[]>({
+    queryKey: ['userCommitments', address],
+    queryFn: async (): Promise<bigint[]> => {
+      if (!address) return [];
+      return await readContract(
+        {
+          address: contractAddress as `0x${string}`,
+          abi: PledgeAbi,
+        },
+        {
+          functionName: 'getUserCommitments',
+          args: [address],
+        }
+      ) as bigint[];
     },
-  })
+    enabled: !!address,
+  });
 
-  // 2. Leer detalles de cada compromiso
-  const pledgesQuery = useReadContract({
-    address: contractAddress,
-    abi: PledgeAbi,
-    functionName: 'getCommitmentDetails',
-    args: pledgeIds.length > 0 ? pledgeIds : undefined,
-    query: {
-      enabled: pledgeIds.length > 0,
-    },
-  })
+  // 2. Leer detalles de cada compromiso individualmente
+  const pledgeDetailsQueries = useQueries({
+    queries: (Array.isArray(pledgeIds) ? pledgeIds : []).map((id) => ({
+      queryKey: ['pledgeDetail', id ? id.toString() : ''],
+      queryFn: async (): Promise<Pledge> => {
+        return await readContract(
+          {
+            address: contractAddress,
+            abi: PledgeAbi,
+          },
+          {
+            functionName: 'getCommitmentDetails',
+            args: [id],
+          }
+        ) as Pledge;
+      },
+      enabled: !!id && !!address,
+    })),
+  });
 
-  // 3. Filtrar compromisos según la pestaña activa
-  const filteredPledges = (pledgesQuery.data || []).filter(pledge => {
-    if (activeTab === 'active') {
-      return !pledge.completed && !pledge.claimed
-    } else {
-      return pledge.completed || pledge.claimed
-    }
-  })
+  const pledgeDetails = pledgeDetailsQueries.map(q => q.data).filter(Boolean) as Pledge[];
+
+  // Separar compromisos activos y completados
+  const activePledges = pledgeDetails.filter(pledge => !pledge.completed);
+  const completedPledges = pledgeDetails.filter(pledge => pledge.completed);
+
+  const filteredPledges = activeTab === 'active' ? activePledges : completedPledges;
 
   return (
-    <Tabs value={activeTab} onChange={(value) => setActiveTab(value as any)}>
+    <Tabs value={activeTab} onChange={(value) => setActiveTab(value as 'active' | 'completed')}>
       <Tabs.List>
         <Tabs.Tab value="active">Activos</Tabs.Tab>
         <Tabs.Tab value="completed">Completados</Tabs.Tab>
@@ -53,13 +301,7 @@ export function PledgesList() {
 
       <Tabs.Panel value="active" pt="md">
         <Stack>
-          {!address && (
-            <Text ta="center" c="dimmed">Conectá tu wallet para ver tus compromisos</Text>
-          )}
-
-          {isLoadingIds && <LoadingOverlay visible />}
-
-          {address && filteredPledges.length === 0 && !isLoadingIds && (
+          {filteredPledges.length === 0 && (
             <Text ta="center" c="dimmed">No hay compromisos activos</Text>
           )}
 
@@ -67,7 +309,7 @@ export function PledgesList() {
             <PledgeCard
               key={index}
               pledge={pledge}
-              id={pledgeIds[index]}
+              id={Array.isArray(pledgeIds) ? pledgeIds[index] : 0n}
               isActive={true}
             />
           ))}
@@ -84,80 +326,76 @@ export function PledgesList() {
             <PledgeCard
               key={index}
               pledge={pledge}
-              id={pledgeIds[index]}
+              id={Array.isArray(pledgeIds) ? pledgeIds[index] : 0n}
               isActive={false}
             />
           ))}
         </Stack>
       </Tabs.Panel>
     </Tabs>
-  )
+  );
 }
 
-function PledgeCard({ pledge, id, isActive }: { pledge: any, id: bigint, isActive: boolean }) {
-  const { writeContract: markComplete, isPending: isCompleting } = useWriteContract()
-  const { writeContract: claimStake, isPending: isClaiming } = useWriteContract()
+// Card para mostrar un compromiso
+function PledgeCard({ pledge, id, isActive }: { pledge: Pledge, id: bigint, isActive: boolean }) {
+  const { writeContract: markComplete, isPending: isCompleting } = useWriteContract();
+  const { writeContract: claimStake, isPending: isClaiming } = useWriteContract();
 
   const handleComplete = async () => {
     try {
-      await markComplete({
+      markComplete({
         address: contractAddress,
         abi: PledgeAbi,
         functionName: 'markAsCompleted',
         args: [id],
-      })
+      }, {});
       notifications.show({
         title: 'Éxito',
         message: 'Compromiso marcado como completado',
         color: 'green',
-      })
+      });
     } catch (error: any) {
       notifications.show({
         title: 'Error',
         message: error.message,
         color: 'red',
-      })
+      });
     }
-  }
+  };
 
   const handleClaim = async () => {
     try {
-      await claimStake({
+      claimStake({
         address: contractAddress,
         abi: PledgeAbi,
         functionName: 'claimStake',
         args: [id],
-      })
+      }, {});
       notifications.show({
         title: 'Éxito',
         message: 'Stake reclamado correctamente',
         color: 'green',
-      })
+      });
     } catch (error: any) {
       notifications.show({
         title: 'Error',
         message: error.message,
         color: 'red',
-      })
+      });
     }
-  }
-
-  const status = pledge.completed
-    ? 'Completado'
-    : dayjs.unix(Number(pledge.deadline)).isBefore(dayjs())
-      ? 'Vencido'
-      : 'Activo'
+  };
 
   return (
-    <Card withBorder shadow="sm" padding="lg">
-      <Text fw={500} mb="xs">{pledge.description}</Text>
-
-      <Group mb="xs">
-        <Badge color={status === 'Completado' ? 'green' : status === 'Vencido' ? 'red' : 'blue'}>
-          {status}
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Group justify="space-between" mb="xs">
+        <Text fw={500}>{pledge.description}</Text>
+        <Badge color={pledge.completed ? 'green' : 'blue'}>
+          {pledge.completed ? 'Completado' : 'Activo'}
         </Badge>
+      </Group>
+      <Group justify="space-between" mb="xs">
         <Text size="sm" c="dimmed">
-          Fecha límite: {dayjs.unix(Number(pledge.deadline)).format('MMM D, YYYY')}
+          Fecha límite: {dayjs(Number(pledge.deadline) * 1000).format('DD/MM/YYYY')}
         </Text>
         <Text size="sm" c="dimmed">
           Stake: {Number(pledge.stakeAmount) / 1e18} ETH
@@ -187,5 +425,5 @@ function PledgeCard({ pledge, id, isActive }: { pledge: any, id: bigint, isActiv
         </Button>
       )}
     </Card>
-  )
+  );
 }
